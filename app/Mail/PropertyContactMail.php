@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Property;
 
 class PropertyContactMail extends Mailable
 {
@@ -16,7 +17,7 @@ class PropertyContactMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(public Property $property, public array $data)
     {
         //
     }
@@ -27,7 +28,9 @@ class PropertyContactMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Property Contact Mail',
+            to: 'admin@gmail.com',
+            replyTo: $this->data['email'],
+            subject: 'Property Contact Mail'
         );
     }
 
