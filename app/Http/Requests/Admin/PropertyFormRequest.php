@@ -33,7 +33,10 @@ class PropertyFormRequest extends FormRequest
             'address' => 'required|string|min:8',
             'postal_code' => 'required|min:5',
             'sold' => 'required|boolean',
-            'options' => 'required|array|exists:options,id'
+            'options' => 'array|exists:options,id',
+            'pictures' => 'array|nullable',
+            'pictures.*' => 'image|mimes:jpeg,png,jpg,gif,svg,JPG,PNG,JPEG|max:2048',
         ];
     }
 }
+

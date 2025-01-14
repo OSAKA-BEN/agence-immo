@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Property;
 use App\Http\Requests\Admin\PropertyFormRequest;
 use App\Models\Option;
+use App\Models\Picture;
 
 class PropertyController extends Controller
 {
@@ -48,6 +49,7 @@ class PropertyController extends Controller
     {
         $property = Property::create($request->validated());
         $property->options()->sync($request->validated('options'));
+        $property->attachFiles($request->validated('pictures'));
         return to_route('admin.property.index')->with('success', 'Propriété créée avec succès');
     }
 
@@ -69,6 +71,7 @@ class PropertyController extends Controller
     {
         $property->update($request->validated());
         $property->options()->sync($request->validated('options'));
+        $property->attachFiles($request->validated('pictures'));
         return to_route('admin.property.index')->with('success', 'Propriété modifiée avec succès');
     }
 
@@ -77,8 +80,8 @@ class PropertyController extends Controller
      */
     public function destroy(Property $property)
     {
+        Picture::destroy($property->pictures()->pluck('id'));
         $property->delete();
-
         return to_route('admin.property.index')->with('success', 'Propriété supprimée avec succès');
     }
 }
