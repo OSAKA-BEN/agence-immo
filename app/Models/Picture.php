@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
-
+use League\Glide\Urls\UrlBuilderFactory;
 
 class Picture extends Model
 {
@@ -21,9 +21,13 @@ class Picture extends Model
         });
     }
 
-    public function getImageUrl(): string
+    public function getImageUrl(?int $width = null, ?int $height = null): string
     {
-        return Storage::disk('public')->url($this->filename);
+        if ($width === null) {
+            return Storage::disk('public')->url($this->filename);
+        }
+        $urlBuilder = UrlBuilderFactory::create('/images/', config('glide.key'));
+        return $urlBuilder->getUrl($this->filename, ['w' => $width, 'h' => $height, 'fit' => 'crop']);
     }
 
 }

@@ -11,7 +11,7 @@
         <div class="carousel-inner">
           @foreach ($property->pictures as $key => $picture)
             <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
-              <img src="{{ $picture->getImageUrl() }}" class="d-block w-100" alt="{{ $picture->filename }}">
+              <img src="{{ $picture->getImageUrl(800, 530) }}" class="d-block w-100" alt="{{ $picture->filename }}">
             </div>
           @endforeach
         </div>
